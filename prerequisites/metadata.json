@@ -1,4 +1,4 @@
-"user":{
+{"user" : {
 	"name":"mrityunjay jha",
 	"mobile_number":"8287299817" ,
 	"email":"mrityunjay.jha2005@gmail.com" ,
@@ -9,4 +9,5 @@
 	"CGPA":"8.00"  ,
 	"LeetCode":"https://leetcode.com/u/idk_the_answer/" ,
 	"Codeforces":"https://codeforces.com/profile/silent_cartographer"
+	}
 }
