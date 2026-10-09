@@ -1,0 +1,21 @@
+{"Education":[
+  {
+    "institue":"Delhi Technological University" ,
+    "timeline":"Aug 2023 - May 2027",
+    "course":"B.Tech in Computer Science and Engineering" ,
+    "score": "8.00"
+  },
+  {
+    "institue":"Govt Boys Sr Sec School, Dwarka Sec-3" ,
+    "timeline":"2020 - 2022",
+    "course":"Senior Secondary (XIIth Grade)",
+    "score": "86.4%"
+  },
+  {
+    "institue":"Ring Midways Sr Sec Public School" ,
+    "timeline":"2019 - 2020",
+    "course":"Secondary (Xth Grade)" ,
+    "score": "94.8%"
+  }
+]
+}
