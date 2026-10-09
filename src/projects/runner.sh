@@ -7,6 +7,8 @@ wait
 (cd stage2 && ./judge.sh)
 wait
 
-echo -e "dooooooooooooooooooooooooooooone\n\n\n"
+(cd stage3 && ./knowledge.sh)
+wait
 
-cat ./stage3/stage2.json
+echo -e "done"
+
