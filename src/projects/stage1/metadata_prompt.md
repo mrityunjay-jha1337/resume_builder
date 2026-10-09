@@ -4,7 +4,7 @@
 Your task is to conduct an exhaustive, deep-dive analysis of this entire repository. You must meticulously examine every single file, folder, and configuration file to fully understand the project's architecture, functionality, and purpose. Leave no stone unturned.
 
 **Output Format Requirement:**
-Your final output MUST be saved directly to a file named `repository_metadata.json` in the root of the repository. Do not simply output the JSON to the console. Create the file and write the JSON content into it. The file MUST contain pure, valid JSON with no markdown formatting blocks (like ```json), no conversational text, and no extra characters.
+Your final output MUST be pure, valid JSON returned directly. Do not create any files. The output MUST contain pure, valid JSON with no markdown formatting blocks (like ```json), no conversational text, and no extra characters.
 
 
 **Required JSON Structure:**
@@ -53,4 +53,4 @@ Your JSON response must strictly follow the schema below, filling in extensive a
 1. **Analyze:** Read through all source code, configuration files (e.g., package.json, Dockerfile, etc.), and documentation.
 2. **Extract:** Gather all necessary technical details, identifying the tech stack, architecture, and coding patterns.
 3. **Evaluate:** Assess the strengths, unique aspects, and overall quality of the project.
-4. **Format & Write:** Synthesize all your findings strictly into the requested JSON structure and write it to a file named `repository_metadata.json` in the current directory. Ensure the JSON is fully valid and parsable.
+4. **Format & Output:** Synthesize all your findings strictly into the requested JSON structure and output it. Ensure the JSON is fully valid and parsable.
