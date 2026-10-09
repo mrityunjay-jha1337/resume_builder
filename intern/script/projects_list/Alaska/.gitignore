@@ -1,0 +1,14 @@
+node_modules
+node_modules/*
+.env.docker 
+.env
+dist
+dist/*
+mri
+mri/*
+chat-backend.excalidraw
+.vscode/*
+.vscode
+.agents/*
+.agents
+test.log

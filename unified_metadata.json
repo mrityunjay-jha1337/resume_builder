@@ -87,6 +87,7 @@
     },
     "overallEvaluation": "Alaska is an exceptionally well-architected project that demonstrates senior-level system design skills. The separation of concerns between the main API and the chat microservices, combined with robust database pooling and message queueing, ensures high scalability. The creative use of Suffix Automatons for spatial-temporal matching highlights strong computer science fundamentals. The codebase is maintainable, highly modular, and production-ready.",
     "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Alaska",
+    "type": "personal",
     "repoLink": "https://github.com/mrityunjay-jha1337/Alaska"
   },
   {
@@ -176,6 +177,7 @@
     },
     "overallEvaluation": "Cortex is an exceptionally well-architected framework, displaying a sophisticated mastery of computer science concepts spanning graph theory, memory lifecycle management, and reactive GUI design. The separation of concerns between serialization, modeling, execution logic, and the UI layer is outstanding. Using a Token-Passing Petri-net approach to resolve 'Diamond Deadlock' edge-cases demonstrates impressive engineering rigor. Incorporating self-healing via VLM fallbacks provides Cortex with a profound competitive advantage in visual RPA durability, rendering it highly scalable and immensely maintainable for enterprise applications.",
     "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Cortex",
+    "type": "personal",
     "repoLink": "https://github.com/mrityunjay-jha1337/Cortex"
   },
   {
@@ -267,6 +269,7 @@
     },
     "overallEvaluation": "The Nirvana project demonstrates exceptional design patterns by successfully marrying a highly available serverless edge architecture with a persistent stateful real-time backend. The documentation is remarkably comprehensive and reflects a deep understanding of distributed systems, edge computing, connection pooling, and appropriate database selection. The codebase is highly modular, properly segmented by concern, and well-designed to scale efficiently under high traffic.",
     "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Nirvana",
+    "type": "personal",
     "repoLink": "https://github.com/mrityunjay-jha1337/Nirvana"
   },
   {
@@ -347,6 +350,7 @@
     },
     "overallEvaluation": "The project is of exceptionally high quality, demonstrating an advanced and professional implementation of Three.js within a React ecosystem. The code is highly maintainable due to its strict modularity and clear separation of concerns. Scalability is excellent, as adding new 3D experiences simply involves creating a new folder and registering a route, with minimal impact on performance due to meticulous memory management and lazy loading.",
     "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Three",
+    "type": "personal",
     "repoLink": "https://github.com/mrityunjay-jha1337/Three"
   }
 ]

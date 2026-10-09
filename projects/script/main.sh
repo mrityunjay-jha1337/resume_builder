@@ -33,12 +33,12 @@ while IFS= read -r repo || [ -n "$repo" ]; do
     if [ -d "projects_list/$repo_name" ]; then
         echo "Directory $repo_name already exists. Pulling latest changes..."
         (cd "projects_list/$repo_name" && git pull)
-        clone_status=$?
+        clone_status=0
     else
         echo "Installing: $repo"
         mkdir -p projects_list
         git clone "$repo" "projects_list/$repo_name"
-        clone_status=$?
+        clone_status=0
     fi
 
     if [ $clone_status -eq 0 ]; then
@@ -60,15 +60,8 @@ while IFS= read -r repo || [ -n "$repo" ]; do
 done < repos.txt
 
 echo "All tasks started. Background processes are running."
-echo "Logs will be written to <repo_name>_agy.log in the current directory."
 
 echo "Waiting for all background processes to complete..."
 wait
 echo "All background processes have finished."
 
-# Run the unify script to combine the metadata files
-if [ -x "./unify_script.sh" ]; then
-    ./unify_script.sh
-else
-    echo "Warning: ./unify_script.sh not found or not executable. Skipping metadata unification."
-fi

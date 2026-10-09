@@ -30,39 +30,21 @@ def extract_json(text):
     if start != -1 and end != 0:
         text = text[start:end]
         
-    return json.loads(text)
+    try:
+        return json.loads(text)
+    except:
+        # fallback
+        # just find first [ and last ]
+        if start != -1 and end != -1:
+             return json.loads(text[start:end])
+        return []
 
-def main():
-    root_dir = os.path.dirname(os.path.abspath(__file__))
-    metadata_path = os.path.join(root_dir, "unified_metadata.json")
-    jd_path = os.path.join(root_dir, "company", "JD.md")
-    
-    if not os.path.exists(metadata_path):
-        print(f"Error: {metadata_path} not found.")
-        print("Please run the first pipeline (main.sh and unify_script.sh) to generate the metadata.")
-        return
+def select_projects(jd, metadata, project_type, limit=2):
+    if not metadata:
+        return []
         
-    if not os.path.exists(jd_path):
-        print(f"Error: {jd_path} not found.")
-        print("Creating an empty JD.md file. Please populate it with a job description.")
-        os.makedirs(os.path.dirname(jd_path), exist_ok=True)
-        with open(jd_path, "w") as f:
-            f.write("")
-        return
-        
-    with open(metadata_path, "r", encoding="utf-8") as f:
-        metadata = json.load(f)
-        
-    with open(jd_path, "r", encoding="utf-8") as f:
-        jd = f.read().strip()
-        
-    if not jd:
-        print("Warning: JD is empty. Please populate company/JD.md with a job description for better results.")
-        jd = "Software Engineer role (generic)"
-        
-    # Step 1: Ask AGY to select best projects
     selection_prompt = f"""
-    You are an expert technical recruiter. Given the following Job Description (JD) and a list of project metadata, select the most relevant projects for this role.
+    You are an expert technical recruiter. Given the following Job Description (JD) and a list of {project_type} project metadata, select the most relevant projects for this role.
     
     Job Description:
     {jd}
@@ -70,7 +52,7 @@ def main():
     Projects Metadata:
     {json.dumps(metadata, indent=2)}
     
-    Output ONLY a JSON list of the 'localLocation' strings for the selected projects. Limit to top 2-3 projects.
+    Output ONLY a JSON list of the 'localLocation' strings for the selected {project_type} projects. Limit to top {limit} projects.
     For example:
     [
       "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Alaska"
@@ -78,30 +60,28 @@ def main():
     Do not include any other text or markdown block, just the JSON array.
     """
     
-    print("Selecting best projects based on JD...")
-    selection_output = run_agy(selection_prompt, cwd=root_dir)
+    print(f"Selecting best {project_type} projects based on JD...")
+    selection_output = run_agy(selection_prompt)
     if not selection_output:
-        print("Failed to get project selection from AGY.")
-        return
+        print(f"Failed to get {project_type} project selection from AGY.")
+        return []
         
     try:
         selected_locations = extract_json(selection_output)
     except Exception as e:
-        print(f"Could not parse selection output as JSON. Output was:\n{selection_output}")
-        return
+        print(f"Could not parse selection output as JSON for {project_type}. Output was:\n{selection_output}")
+        return []
         
     if not isinstance(selected_locations, list):
         print(f"Expected a JSON list, but got: {type(selected_locations)}")
-        return
+        return []
         
-    print(f"Selected projects: {selected_locations}")
-    
+    return selected_locations
+
+def generate_bullets_for_locations(locations, jd, root_dir):
     final_bullets = {}
-    
-    for loc in selected_locations:
-        # Convert relative to absolute if needed, or handle potential path issues
+    for loc in locations:
         if not os.path.isabs(loc):
-            # Try to resolve relative to root_dir
             loc = os.path.abspath(os.path.join(root_dir, loc))
             
         if not os.path.isdir(loc):
@@ -136,7 +116,51 @@ def main():
                     print(f"Warning: Expected list of bullets for {proj_name}, got {type(bullets)}")
             except Exception as e:
                 print(f"Could not parse bullets for {proj_name}. Output was:\n{bullet_output}")
-                
+    return final_bullets
+
+def main():
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    metadata_path = os.path.join(root_dir, "unified_metadata.json")
+    jd_path = os.path.join(root_dir, "company", "JD.md")
+    
+    if not os.path.exists(metadata_path):
+        print(f"Error: {metadata_path} not found.")
+        print("Please run the first pipeline (unify_metadata.py) to generate the metadata.")
+        return
+        
+    if not os.path.exists(jd_path):
+        print(f"Error: {jd_path} not found.")
+        print("Creating an empty JD.md file. Please populate it with a job description.")
+        os.makedirs(os.path.dirname(jd_path), exist_ok=True)
+        with open(jd_path, "w") as f:
+            f.write("")
+        return
+        
+    with open(metadata_path, "r", encoding="utf-8") as f:
+        metadata = json.load(f)
+        
+    with open(jd_path, "r", encoding="utf-8") as f:
+        jd = f.read().strip()
+        
+    if not jd:
+        print("Warning: JD is empty. Please populate company/JD.md with a job description for better results.")
+        jd = "Software Engineer role (generic)"
+        
+    # Split metadata by type
+    intern_metadata = [m for m in metadata if m.get("type") == "intern"]
+    personal_metadata = [m for m in metadata if m.get("type") == "personal"]
+    
+    intern_locs = select_projects(jd, intern_metadata, "intern", limit=2)
+    personal_locs = select_projects(jd, personal_metadata, "personal", limit=2)
+    
+    print(f"Selected intern projects: {intern_locs}")
+    print(f"Selected personal projects: {personal_locs}")
+    
+    final_bullets = {
+        "intern": generate_bullets_for_locations(intern_locs, jd, root_dir),
+        "personal": generate_bullets_for_locations(personal_locs, jd, root_dir)
+    }
+    
     output_json_path = os.path.join(root_dir, "company", "star_bullets.json")
     os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
     with open(output_json_path, "w", encoding="utf-8") as f:

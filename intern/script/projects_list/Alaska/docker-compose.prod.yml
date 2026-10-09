@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: alaska_db_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-prod_secure_password}
+      POSTGRES_DB: alaska_prod
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+
+  api:
+    image: ${DOCKER_REGISTRY}/alaska-api:latest
+    container_name: alaska_backend_prod
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env.prod
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - db
+
+  redis:
+    image: redis:7-alpine
+    container_name: alaska_redis_prod
+    restart: always
+    ports:
+      - "6380:6379"
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: alaska_pgbouncer_prod
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-prod_secure_password}@db:5432/alaska_prod
+      - MAX_CLIENT_CONN=1000
+      - DEFAULT_POOL_SIZE=50
+      - POOL_MODE=transaction
+      - LISTEN_PORT=6432
+      - AUTH_TYPE=scram-sha-256
+    ports:
+      - "6432:6432"
+    depends_on:
+      - db
+
+  chat-gateway:
+    image: ${DOCKER_REGISTRY}/alaska-chat-gateway:latest
+    container_name: alaska_chat_gateway_prod
+    restart: always
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - WORKER_URL=http://chat-worker:4002
+      - REDIS_URL=redis://redis:6379
+      - NODE_ENV=production
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY:-prod_secure_secret_123}
+      - JWT_SECRET=${JWT_SECRET:-supersecret_jwt_key_for_local_dev}
+    depends_on:
+      - redis
+      - chat-worker
+
+  chat-worker:
+    image: ${DOCKER_REGISTRY}/alaska-chat-worker:latest
+    container_name: alaska_chat_worker_prod
+    restart: always
+    ports:
+      - "4002:4002"
+    environment:
+      - PORT=4002
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-prod_secure_password}@pgbouncer:6432/alaska_prod?pgbouncer=true
+      - NODE_ENV=production
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY:-prod_secure_secret_123}
+      - JWT_SECRET=${JWT_SECRET:-supersecret_jwt_key_for_local_dev}
+    depends_on:
+      - redis
+      - pgbouncer
+
+  frontend:
+    image: ${DOCKER_REGISTRY}/alaska-frontend:latest
+    container_name: alaska_frontend_prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - chat-gateway
+      - chat-worker
+
+
+volumes:
+  pgdata_prod:

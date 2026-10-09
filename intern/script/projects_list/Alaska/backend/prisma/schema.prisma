@@ -1,0 +1,112 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  username      String   @unique
+  email         String   @unique
+  password      String?
+  profile_image String?
+  about         String?
+  bio           String?
+  images        String[]
+  trips         Trip[]   @relation("UserTrips")
+  tripHistory   TripHistory[] @relation("UserTripHistory")
+  ratings       Float      @default(0)
+  ratingCount   Int      @default(0)
+  json          Json?    @default("{}")
+  
+  writtenReviews  Review[] @relation("WrittenReviews")
+  receivedReviews Review[] @relation("ReceivedReviews")
+
+  sentFriendRequests     Friendship[] @relation("SentFriendRequests")
+  receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
+
+  sentMessages     ChatMessage[] @relation("SentMessages")
+  receivedMessages ChatMessage[] @relation("ReceivedMessages")
+}
+
+model Friendship {
+  id        String   @id @default(uuid())
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requester   User   @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  requesterId String
+
+  receiver   User   @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String
+
+  blockedBy  String? 
+
+  @@unique([requesterId, receiverId])
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+model Trip {
+  id           String   @id @default(uuid())
+  user         User     @relation("UserTrips", fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  startTime    DateTime
+  stationList  Int[]
+  length       Int
+  startStation Int
+  endStation   Int
+}
+
+model TripHistory {
+  id           String   @id @default(uuid())
+  user         User     @relation("UserTripHistory", fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  startTime    DateTime
+  stationList  Int[]
+  length       Int
+  startStation Int
+  endStation   Int
+  archivedAt   DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Float 
+  comment   String?
+  createdAt DateTime @default(now())
+
+  reviewer   User   @relation("WrittenReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewerId String
+
+  reviewee   User   @relation("ReceivedReviews", fields: [revieweeId], references: [id], onDelete: Cascade)
+  revieweeId String
+
+  @@index([revieweeId]) 
+  @@index([reviewerId])
+}
+
+model ChatMessage {
+  id              String   @id @default(uuid())
+  message         String
+  clientTimestamp BigInt?
+  createdAt       DateTime @default(now())
+  
+  sender          User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId        String
+
+  receiver        User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId      String
+
+  @@index([senderId, receiverId])
+}

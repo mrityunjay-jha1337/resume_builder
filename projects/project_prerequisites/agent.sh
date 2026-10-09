@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 set -u
@@ -32,19 +31,19 @@ for repo in "$@"; do
         to the job description.
 
         Requirements:
-        1. Understand the actual project by examining its source code,
-          architecture, features, and technologies.
-        2. Generate 3-5 concise, impactful resume bullet points.
-        3. Highlight relevant technical skills, engineering decisions,
-          complexity, and measurable impact where supported by evidence.
+        1. Understand the actual project by examining its source code,architecture, features, and technologies.
+        2. Generate 4 concise, impactful resume bullet points.
+        3. Highlight relevant technical skills, engineering decisions,complexity, and measurable impact where supported by evidence.
         4. Never invent metrics, users, performance improvements, or features.
         5. Use strong action verbs and professional resume language.
         6. Prioritize relevance to the given job description.
         7. Do not modify any project files.
-        8. Return valid JSON only, following this structure:
+        8. Use STAR method strictly to generate bullets  
+        9. Return valid JSON only, following this structure:
 
         {
           \"project_name\": \"$project_name\",
+          \"Github_link\": \"$repo\",
           \"technologies\": [],
           \"bullets\": [
             {
@@ -61,8 +60,7 @@ for repo in "$@"; do
             --dangerously-skip-permissions \
             --output-format json \
             -p "$prompt" \
-            > "$repo/agy-bullets.json" \
-            2> "$repo/agy.log"
+            > "$repo/agy-bullets.json" 
 
         echo "Finished: $project_name"
     ) &
@@ -75,7 +73,7 @@ wait
 echo "All bullets made."
 
 # now we need to create a single unified json for all bullets
-output_file="/resume/company/all-project-bullets.json"
+projects_section="/resume/resume_section/projects_section.json"
 
 jq -s '{
     projects: .
@@ -83,6 +81,6 @@ jq -s '{
     if [[ -f "$repo/agy-bullets.json" ]]; then
         printf '%s\n' "$repo/agy-bullets.json"
     fi
-done) > "$output_file"
+done) > "$projects_section"
 
-echo "Unified JSON saved to: $output_file"
+echo "Unified JSON saved to: $projects_section"
