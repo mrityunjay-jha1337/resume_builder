@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
-
+cd "$(dirname "$0")" || exit 1
 # Adjusting paths relative to /mnt/c/Users/rajku/Desktop/resume/src/projects/stage2/
-JD_FILE="../../../company/JD.md"
+JD_FILE="./../../../company/JD.md"
 STAGE1_JSON="./stage1.json"
 PROMPT_FILE="prompt.md"
 
@@ -59,7 +59,8 @@ try:
     with open("raw_stage2.json", "r", encoding="utf-8") as f:
         content = f.read().strip()
         
-    wrapper = json.loads(content)
+    decoder = json.JSONDecoder()
+    wrapper, idx = decoder.raw_decode(content)
     
     # Extract inner response if agy wrapped it
     if "response" in wrapper:
@@ -74,6 +75,7 @@ try:
         
     data = json.loads(inner_content)
     
+    os.makedirs("../stage3", exist_ok=True)
     with open("../stage3/stage2.json", "w", encoding="utf-8") as out:
         json.dump(data, out, indent=2)
         

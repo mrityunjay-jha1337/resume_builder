@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+cd "$(dirname "$0")" || exit 1
 echo "Welcome! This script installs and generates metadata about all of your projects in a json and then unify them..."
 
 # Ensure required files exist
@@ -91,42 +91,37 @@ for file_path in metadata_files:
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read().strip()
-            # Strip markdown formatting if present
-            content = re.sub(r"^```json\s*", "", content, flags=re.IGNORECASE)
-            content = re.sub(r"\s*```$", "", content)
             
-            wrapper_data = json.loads(content)
-            
-            # If agy wrapped the output, extract the actual response
-            if "response" in wrapper_data:
-                inner_content = wrapper_data["response"].strip()
-                # Find the first { or [ and the last } or ]
-                match = re.search(r"(\{.*\}|\[.*\])", inner_content, re.DOTALL)
-                if match:
-                    inner_content = match.group(1)
-                
-                try:
-                    data = json.loads(inner_content)
-                except json.JSONDecodeError as e:
-                    print(f"Error parsing inner JSON response in {file_path}: {e}")
-                    continue
+        decoder = json.JSONDecoder()
+        obj, idx = decoder.raw_decode(content)
+        
+        if "response" in obj:
+            response_str = obj.get("response")
+            start = response_str.find("{")
+            end = response_str.rfind("}")
+            if start != -1 and end != -1:
+                clean_str = response_str[start:end+1]
+                data = json.loads(clean_str)
             else:
-                data = wrapper_data
+                print(f"Could not find valid JSON in response string for {file_path}")
+                continue
+        else:
+            data = obj
             
-            repo_dir = os.path.basename(os.path.dirname(file_path))
-            data["localLocation"] = os.path.abspath(os.path.dirname(file_path))
-            
-            data["repoLink"] = ""
-            if os.path.exists("repos.txt"):
-                with open("repos.txt", "r") as rfile:
-                    for line in rfile:
-                        line = line.strip()
-                        if line.endswith("/" + repo_dir) or line.endswith("/" + repo_dir + ".git"):
-                            data["repoLink"] = line
-                            break
-                            
-            combined_data.append(data)
-            print(f"Successfully loaded {file_path}")
+        repo_dir = os.path.basename(os.path.dirname(file_path))
+        data["localLocation"] = os.path.abspath(os.path.dirname(file_path))
+        
+        data["repoLink"] = ""
+        if os.path.exists("repos.txt"):
+            with open("repos.txt", "r") as rfile:
+                for line in rfile:
+                    line = line.strip()
+                    if line.endswith("/" + repo_dir) or line.endswith("/" + repo_dir + ".git"):
+                        data["repoLink"] = line
+                        break
+                        
+        combined_data.append(data)
+        print(f"Successfully loaded {file_path}")
     except Exception as e:
         print(f"Error parsing {file_path}: {e}")
 
