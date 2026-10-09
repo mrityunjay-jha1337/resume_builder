@@ -1,34 +1,73 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 echo "Welcome! This script installs and generates metadata about your projects..."
+
+# Ensure required files exist
+if [ ! -f "prompt.md" ]; then
+    echo "Error: prompt.md not found!"
+    exit 1
+fi
+
+if [ ! -f "repos.txt" ]; then
+    echo "Error: repos.txt not found!"
+    exit 1
+fi
+
 prompt=$(cat prompt.md)
 
-while IFS= read -r repo
-do
+# Read repos.txt (|| [ -n "$repo" ] ensures the last line is read even if missing a newline)
+while IFS= read -r repo || [ -n "$repo" ]; do
+    # Strip carriage returns and trim whitespace
+    repo=$(echo "$repo" | tr -d '\r' | xargs)
+
     if [ -z "$repo" ]; then
         continue
     fi
 
-    echo "Installing: $repo"
+    echo "Processing: $repo"
+    
+    # Extract repo name from URL
+    repo_name=$(basename "$repo" .git)
 
-    if git clone "$repo"
-    then
-        echo "Installation successful for $repo"
-        repo_name=$(basename "$repo" .git)
+    # Check if directory already exists
+    if [ -d "$repo_name" ]; then
+        echo "Directory $repo_name already exists. Pulling latest changes..."
+        (cd "$repo_name" && git pull)
+        clone_status=$?
+    else
+        echo "Installing: $repo"
+        git clone "$repo"
+        clone_status=$?
+    fi
+
+    if [ $clone_status -eq 0 ]; then
+        echo "Installation/Update successful for $repo_name"
 
         # AGY ko background mein run karo
         (
             cd "$repo_name" || exit 1
-
-            timeout 15m agy --dangerously-skip-permissions \
-                "$prompt"
+            echo "Starting AGY for $repo_name..."
+            timeout 15m agy --dangerously-skip-permissions -p "$prompt"
+            echo "AGY completed for $repo_name."
         ) > "${repo_name}_agy.log" 2>&1 &
 
-        echo "AGY started for $repo_name"
+        echo "AGY started in background for $repo_name"
     else
-        echo "Something went wrong for $repo"
+        echo "Something went wrong when trying to fetch $repo"
     fi
 
 done < repos.txt
 
-echo "All tasks started."
+echo "All tasks started. Background processes are running."
+echo "Logs will be written to <repo_name>_agy.log in the current directory."
+
+echo "Waiting for all background processes to complete..."
+wait
+echo "All background processes have finished."
+
+# Run the unify script to combine the metadata files
+if [ -x "./unify_script.sh" ]; then
+    ./unify_script.sh
+else
+    echo "Warning: ./unify_script.sh not found or not executable. Skipping metadata unification."
+fi
