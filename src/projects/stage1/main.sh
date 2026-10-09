@@ -70,7 +70,7 @@ echo "All tasks started. Background processes are running.Waiting for all backgr
 wait
 
 echo "All background processes have finished.now unifying them..."
-OUTPUT_FILE="./stage1.json"
+OUTPUT_FILE="./../stage2/stage1.json"
 
 echo "Combining metadata files using Python for robustness..."
 
@@ -95,7 +95,17 @@ for file_path in metadata_files:
             content = re.sub(r"^```json\s*", "", content, flags=re.IGNORECASE)
             content = re.sub(r"\s*```$", "", content)
             
-            data = json.loads(content)
+            wrapper_data = json.loads(content)
+            
+            # If agy wrapped the output, extract the actual response
+            if "response" in wrapper_data:
+                try:
+                    data = json.loads(wrapper_data["response"])
+                except json.JSONDecodeError:
+                    print(f"Error parsing inner JSON response in {file_path}")
+                    continue
+            else:
+                data = wrapper_data
             
             repo_dir = os.path.basename(os.path.dirname(file_path))
             data["localLocation"] = os.path.abspath(os.path.dirname(file_path))
