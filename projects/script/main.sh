@@ -36,6 +36,7 @@ while IFS= read -r repo || [ -n "$repo" ]; do
         clone_status=$?
     else
         echo "Installing: $repo"
+        cd projects_list
         git clone "$repo"
         clone_status=$?
     fi
@@ -49,7 +50,7 @@ while IFS= read -r repo || [ -n "$repo" ]; do
             echo "Starting AGY for $repo_name..."
             timeout 15m agy --dangerously-skip-permissions -p "$prompt"
             echo "AGY completed for $repo_name."
-        ) > "${repo_name}_agy.log" 2>&1 &
+        ) &
 
         echo "AGY started in background for $repo_name"
     else
