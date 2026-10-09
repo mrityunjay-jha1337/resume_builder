@@ -1,0 +1,22 @@
+{
+  "Alaska": [
+    "Engineered a high-performance path-matching algorithm by implementing a Suffix Automaton data structure, reducing route query time complexity to linear time O(N) and significantly optimizing search operations.",
+    "Architected a scalable real-time chat subsystem by decoupling WebSocket connection management using Node.js and Socket.io, leveraging Nginx for load balancing across horizontally scaled gateway replicas to sustain 14,000 concurrent active connections.",
+    "Ensured zero message loss and mitigated database bottlenecks during peak traffic by integrating Redis Streams as a high-throughput message queue, utilizing background workers to batch insert messages into PostgreSQL.",
+    "Containerized a microservices architecture utilizing Docker, integrating PgBouncer to multiplex PostgreSQL database connections and prevent resource exhaustion under heavy application load."
+  ],
+  "Cortex": [
+    "Engineered a robust robotic process automation (RPA) platform in Python that bypasses fragile DOM structures, leveraging OpenCV for multi-scale template matching and PyAutoGUI to achieve reliable task execution across complex and virtual desktop environments.",
+    "Developed an autonomous self-healing system integrating Vision-Language Models (VLMs) to dynamically re-locate altered UI elements on the fly, eliminating workflow crashes due to interface updates and significantly reducing manual maintenance overhead.",
+    "Architected a custom token-passing graph traversal engine to orchestrate complex DAG-based workflows, introducing a 'ghost token' mechanism to resolve diamond deadlocks in conditional branches and guarantee deterministic execution.",
+    "Optimized continuous workflow operations by implementing a non-recursive, queue-based loop execution system utilizing pre-execution depth-first search for back-edge detection, preventing stack overflow errors during long-running iterations.",
+    "Built a responsive, asynchronous GUI using PyQt6, decoupling the core execution engine onto background threads via thread-safe signals and slots to deliver real-time execution telemetry without blocking the main thread."
+  ],
+  "Nirvana": [
+    "Architected a dual-backend system utilizing a serverless edge API (Cloudflare Workers, Hono) and a stateful service (Node.js, Express), successfully decoupling high-traffic content delivery from persistent WebSocket communication.",
+    "Implemented a polyglot persistence strategy using PostgreSQL for ACID-compliant user data and MongoDB for real-time chat, optimizing read/write performance across distinct database access patterns.",
+    "Optimized serverless database access by integrating Prisma Accelerate for global connection pooling, preventing connection exhaustion and significantly reducing cold-start latency under high concurrency.",
+    "Engineered a low-latency live messaging feature using Socket.IO, synchronizing bidirectional events with a React and Zustand frontend to deliver seamless real-time user presence and message updates.",
+    "Secured distributed services by standardizing JWT-based authentication and bcrypt password hashing, ensuring robust authorization across both stateless HTTP endpoints and persistent WebSocket connections."
+  ]
+}

@@ -29,15 +29,15 @@ while IFS= read -r repo || [ -n "$repo" ]; do
     # Extract repo name from URL
     repo_name=$(basename "$repo" .git)
 
-    # Check if directory already exists
-    if [ -d "$repo_name" ]; then
+    # Check if directory already exists in projects_list
+    if [ -d "projects_list/$repo_name" ]; then
         echo "Directory $repo_name already exists. Pulling latest changes..."
-        (cd "$repo_name" && git pull)
+        (cd "projects_list/$repo_name" && git pull)
         clone_status=$?
     else
         echo "Installing: $repo"
-        cd projects_list
-        git clone "$repo"
+        mkdir -p projects_list
+        git clone "$repo" "projects_list/$repo_name"
         clone_status=$?
     fi
 
@@ -46,7 +46,7 @@ while IFS= read -r repo || [ -n "$repo" ]; do
 
         # AGY ko background mein run karo
         (
-            cd "$repo_name" || exit 1
+            cd "projects_list/$repo_name" || exit 1
             echo "Starting AGY for $repo_name..."
             timeout 15m agy --dangerously-skip-permissions -p "$prompt"
             echo "AGY completed for $repo_name."

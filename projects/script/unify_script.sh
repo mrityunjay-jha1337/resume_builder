@@ -7,7 +7,7 @@ python3 -c '
 import os, json, glob, re
 
 output_file = "'"$OUTPUT_FILE"'"
-metadata_files = glob.glob("*/repository_metadata.json")
+metadata_files = glob.glob("projects_list/*/repository_metadata.json")
 
 if not metadata_files:
     print("No metadata files found. Creating an empty JSON array.")

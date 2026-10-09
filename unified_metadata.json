@@ -1,0 +1,352 @@
+[
+  {
+    "projectName": "Alaska",
+    "summary": "Alaska is a real-time social commuting application designed to match professionals and students traveling on the same metro route. It aims to turn solitary commutes into opportunities for networking, socialization, and finding companions to travel safely with, utilizing advanced spatial and temporal matching algorithms.",
+    "techStack": {
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "SQL",
+        "Python"
+      ],
+      "frameworks": [
+        "React",
+        "Express",
+        "Vite",
+        "Tailwind CSS"
+      ],
+      "libraries": [
+        "Prisma",
+        "Socket.io",
+        "Zustand",
+        "Framer Motion",
+        "Mapbox GL",
+        "Leaflet"
+      ],
+      "databases": [
+        "PostgreSQL",
+        "Redis"
+      ],
+      "devTools": [
+        "Docker",
+        "Docker Compose",
+        "Vitest",
+        "Jest",
+        "ESLint"
+      ]
+    },
+    "technicalDetails": {
+      "architecture": "The project uses a hybrid architecture consisting of a Monolithic Node.js REST API for core business logic alongside specialized Microservices for real-time chat (chat-gateway and chat-worker). It leverages Nginx as a load balancer, Redis for pub/sub and queueing (Redis Streams), and PgBouncer for database connection pooling.",
+      "keyModules": "1. Path/Trip Matching: An algorithmic engine using Dijkstra's algorithm for route finding and Suffix Automaton for efficient route overlap detection. 2. Real-time Chat: A decoupled messaging system where gateways handle WebSockets and workers process DB persistence asynchronously. 3. User & Profile: JWT-based auth, review system, and friend requests.",
+      "dataFlow": "A user selects start and end stations on the frontend map. The client computes the shortest route (Dijkstra) and builds a Suffix Automaton (SAM) of the path. The serialized SAM is sent to the backend API, which matches it against active trips in the database to find spatial and temporal overlaps. Once matched, users communicate via the chat-gateway (Socket.io). Messages are pushed to Redis Streams and asynchronously persisted to PostgreSQL by the chat-worker.",
+      "setupAndConfiguration": "The entire application runs via Docker Compose. The `docker-compose.yml` file sets up the API, databases (Postgres, Redis), PgBouncer, Nginx (LB), frontend, and 5 replicas each of the chat-gateway and chat-worker services. Environment variables are required for secrets, database URLs, and API keys."
+    },
+    "strongPoints": [
+      {
+        "point": "Highly Scalable Chat Architecture",
+        "justification": "By separating the chat gateway from the chat worker and using Redis Streams with batched database inserts, the system avoids blocking the main API and can handle thousands of concurrent messages efficiently."
+      },
+      {
+        "point": "Database Connection Pooling",
+        "justification": "Implementing PgBouncer ensures that the database is not overwhelmed by connections from the 10+ node microservice containers running concurrently."
+      },
+      {
+        "point": "Client-Side Algorithm Offloading",
+        "justification": "Running Dijkstra's algorithm and building the Suffix Automaton on the frontend reduces backend CPU load, allowing the API to simply perform O(N) overlap lookups."
+      }
+    ],
+    "uniquePoints": [
+      "Utilizing a Suffix Automaton (traditionally used in string matching) to efficiently compute the Longest Common Substring (LCS) of metro station arrays between user routes.",
+      "Spatiotemporal Matching Logic: Not only finding overlapping routes, but calculating the 'time difference at overlap' based on average station transit times to ensure users actually meet at the exact same time and place.",
+      "Using a horizontally scaled, multi-replica WebSocket architecture orchestrated via Redis pub/sub and Nginx in a personal/portfolio project."
+    ],
+    "fileAndFolderAnalysis": {
+      "directoryStructureOverview": "The repository is divided into discrete services: `backend` for the main REST API, `chat-gateway` for Socket.io handling, `chat-worker` for async message processing, `frontend` for the React SPA, `load-tester` for performance testing, and `raw_data` containing scripts to build the metro graph.",
+      "criticalFiles": [
+        {
+          "fileName": "backend/src/services/pathService.js",
+          "purpose": "Contains the core matching algorithm that deserializes the Suffix Automaton and evaluates route viability based on spatial overlap and time synchronization."
+        },
+        {
+          "fileName": "chat-worker/src/services/queue.js",
+          "purpose": "Implements the Redis Stream consumer logic (`xReadGroup`) that batches high-volume chat messages and inserts them into PostgreSQL via Prisma."
+        },
+        {
+          "fileName": "frontend/src/utils/SuffixAutomaton.ts",
+          "purpose": "Client-side implementation of the state machine used to represent the user's route for O(N) overlap matching on the backend."
+        },
+        {
+          "fileName": "docker-compose.yml",
+          "purpose": "The orchestration blueprint defining the multi-container microservice architecture, networking, load balancing, and replication."
+        },
+        {
+          "fileName": "frontend/src/utils/djikstra.tsx",
+          "purpose": "Client-side implementation of Dijkstra's algorithm for finding the shortest path across the Metro network graph."
+        }
+      ]
+    },
+    "overallEvaluation": "Alaska is an exceptionally well-architected project that demonstrates senior-level system design skills. The separation of concerns between the main API and the chat microservices, combined with robust database pooling and message queueing, ensures high scalability. The creative use of Suffix Automatons for spatial-temporal matching highlights strong computer science fundamentals. The codebase is maintainable, highly modular, and production-ready.",
+    "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Alaska",
+    "repoLink": "https://github.com/mrityunjay-jha1337/Alaska"
+  },
+  {
+    "projectName": "Cortex",
+    "summary": "Cortex is a visual robotic process automation (RPA) and intelligent desktop automation platform. It bridges the gap between deterministic physical automation and multimodal generative AI. It interacts with the operating system at the physical level by simulating sub-pixel mouse movements and keystrokes using Computer Vision (OpenCV) for screen perception. Crucially, it incorporates a self-healing engine using Vision-Language Models (VLMs) to dynamically re-locate UI elements and update visual templates on the fly when unexpected UI shifts occur, avoiding the fragility of traditional DOM-based automation tools.",
+    "techStack": {
+      "languages": [
+        "Python (>=3.11)"
+      ],
+      "frameworks": [
+        "PyQt6",
+        "Pydantic V2"
+      ],
+      "libraries": [
+        "pyautogui",
+        "opencv-python",
+        "pynput",
+        "pillow",
+        "networkx",
+        "pyyaml",
+        "pyperclip",
+        "openai",
+        "jinja2",
+        "tenacity",
+        "pywin32",
+        "requests",
+        "openpyxl",
+        "python-dotenv"
+      ],
+      "databases": [],
+      "devTools": [
+        "pytest",
+        "mypy",
+        "ruff",
+        "setuptools"
+      ]
+    },
+    "technicalDetails": {
+      "architecture": "Cortex employs a Micro-Component / Facade architectural pattern. It strictly separates serialization, data models, runtime execution, and UI layers. The system uses a Token-Passing Graph Traversal Engine (inspired by Petri-nets) to navigate complex DAG-based workflows, avoiding the limitations of recursive tree traversal. The execution components use Dynamic Dependency Injection to inject specific contexts (`_context`, `abort_signal`) dynamically at runtime into pure executor functions mapped via a centralized Dispatch DI Registry.",
+      "keyModules": "1. `cortex.graph_model`: Pydantic models for pure graph data structures. 2. `cortex.serializer`: Engine for parsing YAML to models. 3. `cortex.runtime`: Core orchestrator combining mixins (Core, Dispatch, Execution) inside the `GraphExecutor` facade. 4. `cortex.nodes`: Business logic mapped dynamically to node objects. 5. `cortex.gui`: Asynchronous PyQt6 canvas communicating via thread-safe Signals and Slots.",
+      "dataFlow": "A user loads a `.cortex` YAML file, which is serialized and validated by Pydantic and NetworkX. At execution time, the `GraphExecutor` orchestrates tasks on a dedicated QThread. Root nodes are added to a queue. As each node is executed via registry lookup and dependency injection, it reads/mutates a shared `_context` dictionary. Execution state transitions yield Qt signals to reflect telemetry onto the main UI Thread asynchronously.",
+      "setupAndConfiguration": "Requires Python >= 3.11. The repository uses `pyproject.toml` for standard packaging and dependencies. It is installed via `pip install -e .`. To launch, users run `python -m cortex`. API keys for the VLM capability are handled via environment variables (e.g., `OPENAI_API_KEY`)."
+    },
+    "strongPoints": [
+      {
+        "point": "Autonomous Self-Healing UI Location",
+        "justification": "The dual-tier Vision Subsystem pairs high-speed OpenCV template matching (Tier 1) with an LLM fallback (Tier 2). If UI drift breaks Tier 1, the fallback prompts a VLM to find the new UI element, dynamically crops a new bounding box, and saves the patched image back into memory. This eliminates the need for constant script maintenance."
+      },
+      {
+        "point": "Resolution of 'Diamond Deadlocks' via Ghost Tokens",
+        "justification": "Traditional Kahn's Algorithm deadlocks when converging branching logic excludes a path (because the join node's in-degree waits forever). Cortex mitigates this by pushing 'Ghost Tokens' through bypassed branches, allowing merge nodes to satisfy prerequisite token constraints cleanly without redundant execution."
+      },
+      {
+        "point": "Resilient, Non-Recursive State Machine Loop execution",
+        "justification": "By identifying topological back-edges with a pre-execution Depth-First Search scan, the engine manages iterative loops (while/for) using a queue and token propagation rather than standard recursion. This prevents Stack Overflow crashes that would typically occur after long periods of operation."
+      },
+      {
+        "point": "Decoupled Runtime and Pure Executor Functions",
+        "justification": "By isolating execution functions and injecting dependencies on-demand via `inspect.signature` inside `DispatchMixin`, Cortex enables extreme testability, simplifies execution logic, and minimizes serialized graph size."
+      }
+    ],
+    "uniquePoints": [
+      "Human-indistinguishable physical OS I/O simulation through `PyAutoGUI` and `PyWin32`, entirely bypassing website DOM structures and DOM-based bot protections.",
+      "Ghost token architecture extending Kahn\u2019s algorithm to correctly execute DAG architectures featuring conditional branches, converging workflows, and loops seamlessly.",
+      "Integration of multiscale computer vision (template matching) closely paired with multi-modal reasoning capabilities to create self-repairing automation workflows."
+    ],
+    "fileAndFolderAnalysis": {
+      "directoryStructureOverview": "The repository is a standard Python package mapped clearly across domains. At the root, `cortex/` holds all application logic. Inside, `graph_model` handles structured node/edge data; `gui` controls the PyQt6-based interface; `llm` interfaces with external language models; `nodes` maintains actual execution instructions for OS/Vision capabilities; `runtime` wraps everything into the execution token engine; and `serializer` marshals `.cortex` documents.",
+      "criticalFiles": [
+        {
+          "fileName": "cortex/runtime/engine.py",
+          "purpose": "Provides the `GraphExecutor` facade class which inherits Core, Dispatch, and Execution capabilities. It runs the entire token-passing traversal loop asynchronously on a background QThread."
+        },
+        {
+          "fileName": "cortex/readme.md",
+          "purpose": "A meticulous Architectural Decision Records (ADRs) document outlining exact system design rules, subsystem topology, and data flow mechanisms for future contributors."
+        },
+        {
+          "fileName": "pyproject.toml",
+          "purpose": "Build manifest specifying setup mechanisms, runtime dependencies, optional dev dependencies (like pytest, ruff), and entry point mapping (`cortex` -> `cortex.main:main`)."
+        },
+        {
+          "fileName": "cortex/runtime/registry.py",
+          "purpose": "Acts as the central Dispatch DI registry matchmaking structural Node models to executor function implementations, establishing the core dependency injection schema."
+        }
+      ]
+    },
+    "overallEvaluation": "Cortex is an exceptionally well-architected framework, displaying a sophisticated mastery of computer science concepts spanning graph theory, memory lifecycle management, and reactive GUI design. The separation of concerns between serialization, modeling, execution logic, and the UI layer is outstanding. Using a Token-Passing Petri-net approach to resolve 'Diamond Deadlock' edge-cases demonstrates impressive engineering rigor. Incorporating self-healing via VLM fallbacks provides Cortex with a profound competitive advantage in visual RPA durability, rendering it highly scalable and immensely maintainable for enterprise applications.",
+    "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Cortex",
+    "repoLink": "https://github.com/mrityunjay-jha1337/Cortex"
+  },
+  {
+    "projectName": "Nirvana",
+    "summary": "Nirvana is a comprehensive travel blogging platform that combines serverless edge architecture with real-time communication. Users can create, share, and explore travel blogs with rich media content, while also connecting with other travelers through a real-time messaging system.",
+    "techStack": {
+      "languages": [
+        "TypeScript",
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "frameworks": [
+        "React",
+        "Express.js",
+        "Hono"
+      ],
+      "libraries": [
+        "Vite",
+        "Tailwind CSS",
+        "Zustand",
+        "Axios",
+        "Socket.IO",
+        "Framer Motion",
+        "Prisma",
+        "Mongoose",
+        "DaisyUI"
+      ],
+      "databases": [
+        "PostgreSQL",
+        "MongoDB"
+      ],
+      "devTools": [
+        "Cloudflare Workers",
+        "ngrok",
+        "ESLint",
+        "Nodemon"
+      ]
+    },
+    "technicalDetails": {
+      "architecture": "The system utilizes a hybrid microservices architecture. It features an Edge API Service (Hono on Cloudflare Workers) optimized for read-heavy operations like blog fetching, and a stateful Real-Time Service (Express + Socket.IO) dedicated to bidirectional live chat. It heavily employs polyglot persistence, combining PostgreSQL for relational data and MongoDB for flexible peer-to-peer chat metadata.",
+      "keyModules": "1. Edge API Service: Handles JWT auth, blog CRUD operations, image uploads, and PostgreSQL interactions via Prisma Accelerate. 2. Real-Time Service: Manages WebSocket connections via Socket.IO, persists chat messages to MongoDB, and tracks online presence. 3. Frontend: A React SPA managing state with Zustand and routing interactions across the two distinct backends.",
+      "dataFlow": "Client requests flow to either the Edge API (for content/REST queries) or the Real-Time Express Server (for live interactions). For blogs, the Edge API queries PostgreSQL via Prisma Accelerate and returns JSON. For peer-to-peer chat, the frontend persists messages via HTTP to the Express backend (stored in MongoDB), which subsequently broadcasts updates in real-time via Socket.IO to connected peers.",
+      "setupAndConfiguration": "The workspace uses three main development environments: a Vite React frontend, an Edge API Service run via Wrangler Dev, and an Express server run with Nodemon. ngrok is used to expose the local Express server for cross-network socket testing. Key environment variables include database URLs (PostgreSQL and MongoDB), JWT_SECRET, and Cloudinary API credentials."
+    },
+    "strongPoints": [
+      {
+        "point": "Independent Service Scalability",
+        "justification": "The deliberate separation of the backend into an Edge API Service for standard REST operations and an Express service for WebSockets allows each to scale independently according to their distinct workloads, preventing socket management from bottlenecking content delivery."
+      },
+      {
+        "point": "Database Connection Optimization",
+        "justification": "The implementation of Prisma Accelerate for connection pooling from Cloudflare Workers avoids exhausting PostgreSQL connections in a high-concurrency serverless environment."
+      },
+      {
+        "point": "Polyglot Persistence Strategy",
+        "justification": "Strategically pairing PostgreSQL for strictly structured data (users, blogs) with MongoDB for flexible, high-write-throughput data (user chat messages) optimizes the performance characteristics of each database type."
+      }
+    ],
+    "uniquePoints": [
+      "Simultaneous deployment of a globally distributed serverless edge network API alongside a centralized stateful real-time Node server.",
+      "Real-time communication design separates HTTP for message persistence from WebSockets for low-latency live delivery and presence tracking.",
+      "Integration of Google's Gemini AI directly into the serverless backend, maintaining a separate AI chat schema in PostgreSQL while peer-to-peer chats reside in MongoDB."
+    ],
+    "fileAndFolderAnalysis": {
+      "directoryStructureOverview": "A monorepo-style workspace featuring distinct directories for the React frontend, the Cloudflare Workers backend, the Express real-time backend, shared common utilities, and comprehensive architectural documentation.",
+      "criticalFiles": [
+        {
+          "fileName": "docs/architecture/architecture.md",
+          "purpose": "Acts as the central design document, detailing the hybrid microservices approach, database polyglot decisions, request flow diagrams, and fault isolation logic."
+        },
+        {
+          "fileName": "backend/src/index.ts",
+          "purpose": "The primary entry point for the Edge API Service using Hono, orchestrating routes for authentication, blogs, images, and AI (Gemini) features."
+        },
+        {
+          "fileName": "Express_backend/src/index.js",
+          "purpose": "The core initialization file for the real-time chat service, configuring Express middleware, connecting to MongoDB, and setting up the Socket.IO server."
+        },
+        {
+          "fileName": "frontend/src/App.tsx",
+          "purpose": "The root React component responsible for setting up the application's routing topology and establishing global state providers."
+        },
+        {
+          "fileName": "backend/prisma/schema.prisma",
+          "purpose": "Defines the PostgreSQL relational database schema for users, blogs, locations, and AI chats, utilized by the Edge API for Prisma operations."
+        }
+      ]
+    },
+    "overallEvaluation": "The Nirvana project demonstrates exceptional design patterns by successfully marrying a highly available serverless edge architecture with a persistent stateful real-time backend. The documentation is remarkably comprehensive and reflects a deep understanding of distributed systems, edge computing, connection pooling, and appropriate database selection. The codebase is highly modular, properly segmented by concern, and well-designed to scale efficiently under high traffic.",
+    "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Nirvana",
+    "repoLink": "https://github.com/mrityunjay-jha1337/Nirvana"
+  },
+  {
+    "projectName": "3D Experience Gallery",
+    "summary": "A comprehensive web-based gallery of interactive 3D experiences built with React Three Fiber. It features a diverse collection of scenes including 3D text intros, physics simulations with Rapier, custom GLSL shader terrains, morphing particles, raging seas, and dynamic lighting effects.",
+    "techStack": {
+      "languages": [
+        "TypeScript",
+        "GLSL",
+        "JavaScript"
+      ],
+      "frameworks": [
+        "React",
+        "Tailwind CSS"
+      ],
+      "libraries": [
+        "Three.js",
+        "@react-three/fiber",
+        "@react-three/drei",
+        "@react-three/rapier",
+        "framer-motion",
+        "gsap",
+        "leva",
+        "react-router-dom",
+        "three-custom-shader-material",
+        "three-bvh-csg"
+      ],
+      "databases": [],
+      "devTools": [
+        "Vite",
+        "ESLint",
+        "Prettier",
+        "TypeScript Compiler (tsc)",
+        "vite-plugin-glsl"
+      ]
+    },
+    "technicalDetails": {
+      "architecture": "Component-based architecture utilizing React and React Three Fiber. The application acts as a central router that lazy-loads distinct 3D scenes to optimize performance and reduce initial bundle size. Each scene is encapsulated in its own directory with dedicated shaders, components, and informational sidebars.",
+      "keyModules": "The core modules include the main App router (App.tsx), the SceneViewer component that handles dynamic imports and WebGL context cleanup, and the individual 3D experience folders within 'src/models/' (e.g., model_terrain, model_Rapier_Balls, model_Morphing) that encapsulate logic and visual assets.",
+      "dataFlow": "User navigation triggers the SceneViewer to fetch and mount a specific 3D model component. Within scenes, local React state (useState, useRef) manages physics properties and animation states which are updated on every frame (useFrame). Leva UI controls inject dynamic configuration directly into the 3D context.",
+      "setupAndConfiguration": "The project is bootstrapped with Vite, configured via 'vite.config.ts' to handle GLSL shaders seamlessly via 'vite-plugin-glsl' and to optimize React and Tailwind CSS builds. Development scripts are defined in 'package.json'."
+    },
+    "strongPoints": [
+      {
+        "point": "Robust WebGL Memory Management",
+        "justification": "The application explicitly handles WebGL context disposal using 'ext?.loseContext()' in unmount hooks and clears global Drei caches in SceneViewer to prevent memory leaks during scene transitions."
+      },
+      {
+        "point": "Highly Modular and Performant Architecture",
+        "justification": "The heavy use of React.lazy and Suspense for independent 3D scenes guarantees a lightweight initial payload. Each model is self-contained with its own UI sidebar and logic."
+      },
+      {
+        "point": "Advanced Shader Integration",
+        "justification": "Extensive use of custom GLSL shaders alongside standard materials (via three-custom-shader-material) to achieve complex visual effects like simplex noise-based terrains and morphing particles efficiently."
+      }
+    ],
+    "uniquePoints": [
+      "A custom-built interactive sidebar that is resizable and responds to drag events, functioning cleanly over top of complex 3D canvases.",
+      "A morphing particle system utilizing Simplex 3D noise in custom vertex shaders to stagger morph timing per-particle.",
+      "An interactive Rapier physics scene where floating bodies are dynamically repelled by a mouse-controlled light source, blending kinematic manipulations with physics simulations."
+    ],
+    "fileAndFolderAnalysis": {
+      "directoryStructureOverview": "The repository is neatly organized with static assets, models, and textures located in 'public/'. Source code lives under 'src/', where 'src/models/' serves as the main gallery, containing isolated folders for every 3D experience containing their specific components, logic, and shaders.",
+      "criticalFiles": [
+        {
+          "fileName": "src/App.tsx",
+          "purpose": "Acts as the application entry point, routing users and dynamically lazy-loading 3D scenes via SceneViewer."
+        },
+        {
+          "fileName": "vite.config.ts",
+          "purpose": "Configures the Vite bundler, significantly employing 'vite-plugin-glsl' to support direct imports of GLSL shader files in the codebase."
+        },
+        {
+          "fileName": "package.json",
+          "purpose": "Defines project dependencies and scripts, highlighting the reliance on the R3F ecosystem (fiber, drei, rapier) and animation libraries."
+        }
+      ]
+    },
+    "overallEvaluation": "The project is of exceptionally high quality, demonstrating an advanced and professional implementation of Three.js within a React ecosystem. The code is highly maintainable due to its strict modularity and clear separation of concerns. Scalability is excellent, as adding new 3D experiences simply involves creating a new folder and registering a route, with minimal impact on performance due to meticulous memory management and lazy loading.",
+    "localLocation": "/mnt/c/Users/rajku/Desktop/resume/projects/script/projects_list/Three",
+    "repoLink": "https://github.com/mrityunjay-jha1337/Three"
+  }
+]
