@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -e
+
+# Adjusting paths relative to /mnt/c/Users/rajku/Desktop/resume/src/projects/stage2/
+JD_FILE="../../../company/JD.md"
+STAGE1_JSON="../stage1/stage1.json"
+PROMPT_FILE="prompt.md"
+
+if [ ! -f "$JD_FILE" ]; then
+    echo "Error: $JD_FILE not found"
+    exit 1
+fi
+
+if [ ! -f "$STAGE1_JSON" ]; then
+    echo "Error: $STAGE1_JSON not found"
+    exit 1
+fi
+
+if [ ! -f "$PROMPT_FILE" ]; then
+    echo "Error: $PROMPT_FILE not found"
+    exit 1
+fi
+
+echo "Reading inputs..."
+jd_content=$(cat "$JD_FILE")
+metadata_content=$(cat "$STAGE1_JSON")
+prompt_content=$(cat "$PROMPT_FILE")
+
+# Combine everything into a single prompt string
+full_prompt=$(cat <<INPROMPT
+$prompt_content
+
+=== JOB DESCRIPTION ===
+$jd_content
+=======================
+
+=== PROJECTS METADATA (JSON) ===
+$metadata_content
+=================================
+INPROMPT
+)
+
+echo "Running agy to evaluate projects..."
+
+agy \
+    --model "gemini-3.1-pro" \
+    --effort high \
+    --dangerously-skip-permissions \
+    --output-format json \
+    -p "$full_prompt" \
+    > raw_stage2.json
+
+echo "Processing agy output..."
+
+python3 -c '
+import json, sys, re, os
+
+try:
+    with open("raw_stage2.json", "r", encoding="utf-8") as f:
+        content = f.read().strip()
+        
+    wrapper = json.loads(content)
+    
+    # Extract inner response if agy wrapped it
+    if "response" in wrapper:
+        inner_content = wrapper["response"].strip()
+    else:
+        inner_content = content
+        
+    # Remove markdown code blocks if the model returned them
+    inner_content = re.sub(r"^```json\s*", "", inner_content, flags=re.IGNORECASE)
+    inner_content = re.sub(r"\s*```$", "", inner_content)
+    
+    data = json.loads(inner_content)
+    
+    with open("./stage3/stage2.json", "w", encoding="utf-8") as out:
+        json.dump(data, out, indent=2)
+        
+    print("Successfully extracted top projects to stage2.json!")
+    
+except Exception as e:
+    print(f"Error parsing JSON output: {e}")
+    sys.exit(1)
+'
+
+# Clean up raw output
+rm -f raw_stage2.json

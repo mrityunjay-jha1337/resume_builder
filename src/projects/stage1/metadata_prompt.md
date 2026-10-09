@@ -1,11 +1,9 @@
-# Comprehensive Repository Analysis Task
+/goal 
 
-**Objective:**
 Your task is to conduct an exhaustive, deep-dive analysis of this entire repository. You must meticulously examine every single file, folder, and configuration file to fully understand the project's architecture, functionality, and purpose. Leave no stone unturned.
 
 **Output Format Requirement:**
 Your final output MUST be pure, valid JSON returned directly. Do not create any files. The output MUST contain pure, valid JSON with no markdown formatting blocks (like ```json), no conversational text, and no extra characters.
-
 
 **Required JSON Structure:**
 Your JSON response must strictly follow the schema below, filling in extensive and insightful details for each section based on your analysis of the codebase:
@@ -46,10 +44,13 @@ Your JSON response must strictly follow the schema below, filling in extensive a
     ]
   },
   "overallEvaluation": "A professional concluding assessment of the project's overall code quality, maintainability, and scalability."
+  "AbsolutePath":"the absolute path of the root of the project",
+  "GithubRepoLink":"github link of the project"
 }
 ```
 
 **Execution Instructions:**
+
 1. **Analyze:** Read through all source code, configuration files (e.g., package.json, Dockerfile, etc.), and documentation.
 2. **Extract:** Gather all necessary technical details, identifying the tech stack, architecture, and coding patterns.
 3. **Evaluate:** Assess the strengths, unique aspects, and overall quality of the project.
