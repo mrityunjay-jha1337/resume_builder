@@ -2,3 +2,7 @@ src/projects/stage1/projects_list/*
 src/projects/stage1/projects_list/
 src/projects/stage2/stage1.json
 src/projects/stage3/stage2.json
+src/intern/stage1/projects_list/*
+src/intern/stage1/projects_list/
+src/intern/stage2/stage1.json
+src/intern/stage3/stage2.json
