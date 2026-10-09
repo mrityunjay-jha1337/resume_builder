@@ -1,0 +1,17 @@
+{
+  "topProjects": [
+    {
+      "projectName": "Three (3D Experience Gallery)",
+      "AbsolutePath": "/mnt/c/Users/rajku/Desktop/resume/src/projects/stage1/projects_list/Three",
+      "GithubRepoLink": "https://github.com/mrityunjay-jha1337/Three",
+      "matchJustification": "Directly matches the JD's exact request for React and Three.js projects. It demonstrates advanced WebGL integration within a React component architecture, utilizing React Three Fiber for declarative 3D scenes, custom GLSL shaders, and complex performance optimizations."
+    },
+    {
+      "projectName": "Alaska",
+      "AbsolutePath": "/mnt/c/Users/rajku/Desktop/resume/src/projects/stage1/projects_list/Alaska",
+      "GithubRepoLink": "https://github.com/mrityunjay-jha1337/Alaska",
+      "matchJustification": "Satisfies the JD's requirement for React-based applications while strictly avoiding Python. It features a robust React SPA frontend integrated with a highly scalable Node.js microservices architecture, highlighting expertise in state management, real-time WebSockets, and advanced client-side algorithms."
+    }
+  ],
+  "_status": "<!-- GOAL_COMPLETE -->"
+}

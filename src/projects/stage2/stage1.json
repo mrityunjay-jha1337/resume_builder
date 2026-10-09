@@ -1,0 +1,85 @@
+[
+  {
+    "projectName": "Cortex",
+    "summary": "Cortex is a visual robotic process automation (RPA) and intelligent desktop automation platform. It bridges the gap between deterministic physical automation and generative AI. It solves the problem of traditional UI automation tools breaking due to UI changes (like DOM redesigns) by relying on computer vision for screen perception and multimodal LLMs for self-healing, rather than fragile HTML DOM trees.",
+    "techStack": {
+      "languages": [
+        "Python"
+      ],
+      "frameworks": [
+        "PyQt6"
+      ],
+      "libraries": [
+        "PyAutoGUI",
+        "Pynput",
+        "OpenCV-Python",
+        "Pillow",
+        "Pydantic",
+        "NetworkX",
+        "OpenAI",
+        "Tenacity",
+        "Jinja2"
+      ],
+      "databases": [
+        "File-based YAML/JSON (.cortex files)"
+      ],
+      "devTools": [
+        "Pytest",
+        "Mypy",
+        "Ruff",
+        "Setuptools"
+      ]
+    },
+    "technicalDetails": {
+      "architecture": "Cortex utilizes a layered architecture designed to ensure resilience and maintainability. It separates data definitions from execution, using a Token-based Directed Acyclic Graph (DAG) for graph traversal engine, a Dispatch Dependency Injection registry for task execution, and an asynchronous event bus via PyQt6 Signals and Slots for UI feedback.",
+      "keyModules": "Core modules include: cortex.graph_model for strict data definition with Pydantic; cortex.runtime for the Token-Passing execution engine; cortex.nodes.executors containing the concrete task logic (Vision, LLM, Flow, Physical); cortex.serializer for file IO; and GUI elements nested within panels and widgets.",
+      "dataFlow": "User automation definitions are loaded from .cortex YAML files, which are parsed and validated strictly by Pydantic models. The Runtime engine traverses the action graph using Kahn's algorithm augmented with Ghost Tokens to resolve conditionals (avoiding diamond deadlocks). Executors perform the specific tasks via DI, interacting with OS/LLMs, and emit thread-safe telemetry events back to the GUI for real-time visualization.",
+      "setupAndConfiguration": "The project requires Python 3.11+. It is installed into a virtual environment locally via 'pip install -e .'. The required configuration is primarily managed through a .env file (e.g., OPENAI_API_KEY). The main entry point to start the application is 'python -m cortex'."
+    },
+    "strongPoints": [
+      {
+        "point": "Robust Token-based Graph Traversal",
+        "justification": "Modifies Kahn's algorithm by introducing 'Ghost Tokens' to gracefully bypass unused execution paths in If/Else blocks, avoiding the 'Diamond Deadlock'. It also detects back-edges to seamlessly support infinite looping without recursive stack overflows."
+      },
+      {
+        "point": "Strict Input Validation Checkpoint",
+        "justification": "Utilizes Pydantic dynamically to parse and validate incoming untyped YAML files into strongly-typed objects. This insulates the runtime execution engine from malformed data and version mismatches."
+      },
+      {
+        "point": "Thread-Safe UI Telemetry",
+        "justification": "Runs the heavy execution engine on a dedicated background QThread, broadcasting state changes back to the main GUI thread via custom PyQt6 signals and slots. This ensures an entirely responsive UI during intensive automation tasks."
+      }
+    ],
+    "uniquePoints": [
+      "Autonomous Self-Healing: A fallback AI system that uses multimodal LLMs (Vision AI) to dynamically locate and crop target UI elements when standard OpenCV template matching fails. It updates its visual memory in real-time, averting manual fixes.",
+      "Decoupled Desktop Control: Achieves OS-level automation using OpenCV for vision and PyAutoGUI for sub-pixel physical interactions, eliminating reliance on brittle web-based DOM structures.",
+      "Ghost Token Logic: Resolves complex routing problems such as skipped conditional paths without halting downstream converging nodes, keeping graph evaluation robust."
+    ],
+    "fileAndFolderAnalysis": {
+      "directoryStructureOverview": "The repository follows a clean, modular layout. Separation of concerns is evident across distinct packages: 'cortex/graph_model' for typed data schemas, 'cortex/runtime' for execution and traversal, 'cortex/nodes' for concrete node execution logic, 'cortex/llm' for AI interactions, and UI components nested under panels and widgets.",
+      "criticalFiles": [
+        {
+          "fileName": "cortex/runtime/engine_components/execution.py",
+          "purpose": "Contains the core graph traversal algorithms, handling execution queues, ghost token passing for conditions, and back-edge processing for safe loops."
+        },
+        {
+          "fileName": "cortex/nodes/executors/vision_components/locate_core.py",
+          "purpose": "Implements the determinist vision layer relying on screen captures and OpenCV sub-pixel matching, preceding any AI-driven fallback attempts."
+        },
+        {
+          "fileName": "cortex/graph_model/graph.py",
+          "purpose": "Defines the core ActionGraph model and handles rigorous Pydantic-based structural and logic validations for entire workflows."
+        },
+        {
+          "fileName": "cortex/main.py",
+          "purpose": "Serves as the main entry point to bootstrap and launch the Cortex framework."
+        }
+      ]
+    },
+    "overallEvaluation": "The Cortex codebase is an exceptionally well-architected framework that elegantly tackles the fragility of traditional RPA. By fusing rigorous Pydantic data validation, an innovative token-based execution engine capable of complex branching/looping, and AI-driven self-healing for UI changes, the codebase is highly resilient, modular, and maintainable. Its separation of concerns across physical, visual, logic, and GUI boundaries is exemplary.",
+    "AbsolutePath": "/mnt/c/Users/rajku/Desktop/resume/src/projects/stage1/projects_list/Cortex",
+    "GithubRepoLink": "https://github.com/mrityunjay-jha1337/Cortex",
+    "localLocation": "/mnt/c/Users/rajku/Desktop/resume/src/projects/stage1/projects_list/Cortex",
+    "repoLink": "https://github.com/mrityunjay-jha1337/Cortex"
+  }
+]
