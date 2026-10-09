@@ -3,7 +3,7 @@ set -e
 
 # Adjusting paths relative to /mnt/c/Users/rajku/Desktop/resume/src/projects/stage2/
 JD_FILE="../../../company/JD.md"
-STAGE1_JSON="../stage1/stage1.json"
+STAGE1_JSON="./stage1.json"
 PROMPT_FILE="prompt.md"
 
 if [ ! -f "$JD_FILE" ]; then
@@ -67,13 +67,14 @@ try:
     else:
         inner_content = content
         
-    # Remove markdown code blocks if the model returned them
-    inner_content = re.sub(r"^```json\s*", "", inner_content, flags=re.IGNORECASE)
-    inner_content = re.sub(r"\s*```$", "", inner_content)
-    
+    # Find the first { or [ and the last } or ]
+    match = re.search(r"(\{.*\}|\[.*\])", inner_content, re.DOTALL)
+    if match:
+        inner_content = match.group(1)
+        
     data = json.loads(inner_content)
     
-    with open("./stage3/stage2.json", "w", encoding="utf-8") as out:
+    with open("../stage3/stage2.json", "w", encoding="utf-8") as out:
         json.dump(data, out, indent=2)
         
     print("Successfully extracted top projects to stage2.json!")

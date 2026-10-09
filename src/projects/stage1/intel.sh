@@ -99,10 +99,16 @@ for file_path in metadata_files:
             
             # If agy wrapped the output, extract the actual response
             if "response" in wrapper_data:
+                inner_content = wrapper_data["response"].strip()
+                # Find the first { or [ and the last } or ]
+                match = re.search(r"(\{.*\}|\[.*\])", inner_content, re.DOTALL)
+                if match:
+                    inner_content = match.group(1)
+                
                 try:
-                    data = json.loads(wrapper_data["response"])
-                except json.JSONDecodeError:
-                    print(f"Error parsing inner JSON response in {file_path}")
+                    data = json.loads(inner_content)
+                except json.JSONDecodeError as e:
+                    print(f"Error parsing inner JSON response in {file_path}: {e}")
                     continue
             else:
                 data = wrapper_data
