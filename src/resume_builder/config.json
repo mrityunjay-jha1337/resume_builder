@@ -1,0 +1,15 @@
+{
+  "template": "templates/template.resumelatex",
+  "output": {
+    "latex_dir": "output/latex_version",
+    "pdf_file": "output/resume.pdf"
+  },
+  "sections": {
+    "header": "sections/header_section.json",
+    "education": "sections/education_section.json",
+    "experience": "sections/experience_section.json",
+    "projects": "sections/projects_section.json",
+    "skills": "sections/skills_section.json",
+    "achievements": "sections/achievements_section.json"
+  }
+}

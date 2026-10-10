@@ -1,0 +1,13 @@
+[
+  {
+    "company": "QuickIntell, Remote",
+    "duration": "Jun 2026 - Jul 2026",
+    "role": "Software Engineer Intern",
+    "certificate_link": "https://example.com/certificate",
+    "bullets": [
+      "Architected a \\textbf{claims processing MVP platform}, automating the end-to-end insurance lifecycle and reducing manual review overhead by \\textbf{80\\%} via \\textbf{Straight-Through Processing (STP)}.",
+      "Integrated a secure ingestion pipeline using \\textbf{Gmail Connectors} and \\textbf{OAuth2}.",
+      "Developed an AI-driven medical coding system using \\textbf{RAG (Retrieval-Augmented Generation)} and \\textbf{vector databases} to map complex clinical narratives to ICD-10 codes, achieving \\textbf{over 95\\% accuracy} in diagnosis extraction."
+    ]
+  }
+]

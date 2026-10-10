@@ -1,0 +1,23 @@
+[
+  {
+    "title": "ALASKA",
+    "technologies": "React, Node.js, Express, PostgreSQL, Prisma, Redis, PgBouncer, Socket.IO, Docker",
+    "github_link": "https://github.com/mrityunjay-jha1337/Alaska",
+    "bullets": [
+      "Engineered a \\textbf{route-based social networking platform} that enables \\textbf{real-time discovery}, connecting users who share overlapping metro commutes.",
+      "Developed an interactive custom metro route builder using \\textbf{Mapbox GL JS} and \\textbf{Dijkstra's algorithm}, computing optimal shortest paths across a network of 250+ interconnected nodes in real-time.",
+      "Optimized subpath matching by implementing a \\textbf{Suffix Graph}, reducing time complexity from quadratic to $\\mathcal{O}(N \\times L)$ and offloading generation to the client to eliminate server-side preprocessing overhead.",
+      "Built a scalable \\textbf{real-time chat system} utilizing a \\textbf{Gateway-Worker-Queue pattern} with \\textbf{Socket.IO and Redis}, decoupling connections from database writes to ensure message delivery during high traffic spikes."
+    ]
+  },
+  {
+    "title": "CORTEX",
+    "technologies": "Python, PyQt6, Pydantic, NetworkX, LLM, PyAutoGUI",
+    "github_link": "https://github.com/mrityunjay-jha1337/Cortex",
+    "bullets": [
+      "Built an \\textbf{OS-level automation engine} using \\textbf{PyAutoGUI} to interact with complex EHR systems, enabling seamless data entry workflows across iframe-heavy web portals and legacy desktop apps where standard DOM scraping fails.",
+      "Transformed script-based bot creation into a visual workflow by developing a custom \\textbf{drag-and-drop node interface} using \\textbf{PyQt6 and NetworkX}, allowing non-technical users to visually build complex \\textbf{automation pipelines (DAGs)}.",
+      "Reduced UI-update breakages by integrating \\textbf{self-healing image locators} powered by \\textbf{Vision LLMs}, enabling the system to dynamically identify and interact with elements despite layout shifts or varying screen resolutions."
+    ]
+  }
+]

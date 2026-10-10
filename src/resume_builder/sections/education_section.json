@@ -1,0 +1,23 @@
+[
+  {
+    "institution": "IITBOMBAY",
+    "duration": "Aug 2023 - May 2027",
+    "degree": "B.Tech in Computer Science and Engineering",
+    "score_type": "CGPA",
+    "score": "8.00"
+  },
+  {
+    "institution": "Govt Boys Sr Sec School, Dwarka Sec-3",
+    "duration": "2020 - 2022",
+    "degree": "Senior Secondary (XIIth Grade)",
+    "score_type": "Grade",
+    "score": "86\\%"
+  },
+  {
+    "institution": "Ring Midways Sr Sec Public School",
+    "duration": "2019 - 2020",
+    "degree": "Secondary (Xth Grade)",
+    "score_type": "Grade",
+    "score": "94.8\\%"
+  }
+]

@@ -6,3 +6,29 @@ src/intern/stage1/projects_list/*
 src/intern/stage1/projects_list/
 src/intern/stage2/stage1.json
 src/intern/stage3/stage2.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Project specifics
+output/
+bin/
+*.pdf
+*.log
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz

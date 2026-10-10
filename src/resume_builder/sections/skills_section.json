@@ -1,0 +1,22 @@
+[
+  {
+    "category": "Languages",
+    "details": "C/C++, Python, JavaScript, TypeScript, Bash, HTML/CSS"
+  },
+  {
+    "category": "Web \\& Backend APIs",
+    "details": "React.js, Node.js, Express.js, REST APIs, WebSockets"
+  },
+  {
+    "category": "Databases \\& ORM",
+    "details": "PostgreSQL, MongoDB, MySQL, Prisma, ChromaDB"
+  },
+  {
+    "category": "DevOps",
+    "details": "Git, GitHub, GitHub Actions, Docker, AWS, Cloudflare Workers, Linux"
+  },
+  {
+    "category": "Coursework",
+    "details": "Database Management Systems, Object-Oriented Programming, Operating Systems, Computer Networks"
+  }
+]
