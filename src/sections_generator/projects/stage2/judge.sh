@@ -2,7 +2,7 @@
 set -e
 cd "$(dirname "$0")" || exit 1
 # Adjusting paths relative to /mnt/c/Users/rajku/Desktop/resume/src/projects/stage2/
-JD_FILE="./../../../company/JD.md"
+JD_FILE="./../../../../company/JD.pdf"
 STAGE1_JSON="./stage1.json"
 PROMPT_FILE="prompt.md"
 
@@ -22,7 +22,8 @@ if [ ! -f "$PROMPT_FILE" ]; then
 fi
 
 echo "Reading inputs..."
-jd_content=$(cat "$JD_FILE")
+# Parse PDF to text, fallback to empty string if it fails (e.g., if empty or invalid)
+jd_content=$(pdftotext "$JD_FILE" - 2>/dev/null || echo "")
 metadata_content=$(cat "$STAGE1_JSON")
 prompt_content=$(cat "$PROMPT_FILE")
 

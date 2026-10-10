@@ -24,6 +24,13 @@ if [ -f "$PROMPT_FILE" ]; then
     BASE_PROMPT=$(cat "$PROMPT_FILE")
 fi
 
+JD_FILE="$STAGE3_DIR/../../../../company/JD.pdf"
+JD_CONTENT=""
+if [ -f "$JD_FILE" ]; then
+    # Parse PDF to text, fallback to empty string if it fails
+    JD_CONTENT=$(pdftotext "$JD_FILE" - 2>/dev/null || echo "")
+fi
+
 declare -a PIDS
 declare -a RESULT_FILES
 
@@ -40,11 +47,15 @@ for (( i=0; i<$NUM_PROJECTS; i++ )); do
     FULL_PROMPT=$(cat <<EOF
 $BASE_PROMPT
 
+=== JOB DESCRIPTION ===
+$JD_CONTENT
+=======================
+
 Project Details:
 Name: $PROJECT_NAME
 Repo Link: $REPO_LINK
 
-Task: Generate a projects_section JSON object for this project based on its codebase.
+Task: Generate a projects_section JSON object for this project based on its codebase. The generated bullets MUST align with the job description provided above.
 EOF
 )
 
