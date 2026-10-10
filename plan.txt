@@ -1,8 +1,0 @@
-mujhe basically apne resume ko jd ke hisaab se baarbaar update karna padta hai jo ki ek bekar idea hai and very sluggish hai toh mai 
-chahta hun ki mai ek aisa app banau ko ji problem ko solve kare using ai
-
-mai basically ek folder mein apne saare projects rkhunga with their code and everything and usme ek file hogi project metadata jo ki har project ka metadata 
-store karegi ki isme konsi technologies use hui hai and isme kya kya hai everything summarised so that jd mein se 
-padhke jab ai ko decide karna hoga ki konsa project is better for this role 
-woh simply iss metadata file ko dekh ke judge kar lega ki which one is better for this role and fir un selected repos mein jake extended search karega according to the jd bullets 
-toh matlab mai phle saara metadata company mein rkhunga 

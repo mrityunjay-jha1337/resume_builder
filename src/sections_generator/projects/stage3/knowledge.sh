@@ -5,7 +5,7 @@ set -e
 STAGE3_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAGE2_JSON="$STAGE3_DIR/stage2.json"
 PROMPT_FILE="$STAGE3_DIR/prompt.md"
-OUTPUT_FILE="$./../../section/projects_section.json"
+OUTPUT_FILE="$STAGE3_DIR/../../../resume_builder/sections/projects_section.json"
 
 # Check dependencies
 if ! command -v jq &> /dev/null; then
@@ -90,7 +90,7 @@ if [ ${#RESULT_FILES[@]} -gt 0 ]; then
     for file in "${RESULT_FILES[@]}"; do
         if [ -f "$file" ]; then
             # Extract the response, remove markdown formatting, and append to the output file
-            jq -r '.response | sub("^```json\\n";"") | sub("\\n```\\n?$";"")' "$file" > "${file}.tmp"
+            jq -r '.response | sub("(?s).*```json\\n";"") | sub("(?s)\\n```.*";"")' "$file" > "${file}.tmp"
             jq -s '.[0] + [.[1]]' "$OUTPUT_FILE" "${file}.tmp" > "${OUTPUT_FILE}.tmp"
             mv "${OUTPUT_FILE}.tmp" "$OUTPUT_FILE"
             rm "${file}.tmp"
