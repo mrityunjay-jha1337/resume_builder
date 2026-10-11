@@ -1,23 +1,24 @@
 [
   {
-    "title": "ALASKA",
-    "technologies": "React, Node.js, Express, PostgreSQL, Prisma, Redis, PgBouncer, Socket.IO, Docker",
-    "github_link": "https://github.com/mrityunjay-jha1337/Alaska",
+    "title": "CORTEX",
+    "technologies": "Python, PyQt6, OpenCV, Pydantic, NetworkX, PyAutoGUI, Multithreading, Asynchronous I/O, Tenacity",
+    "github_link": "https://github.com/mrityunjay-jha1337/Cortex",
     "bullets": [
-      "Engineered a \\textbf{route-based social networking platform} that enables \\textbf{real-time discovery}, connecting users who share overlapping metro commutes.",
-      "Developed an interactive custom metro route builder using \\textbf{Mapbox GL JS} and \\textbf{Dijkstra's algorithm}, computing optimal shortest paths across a network of 250+ interconnected nodes in real-time.",
-      "Optimized subpath matching by implementing a \\textbf{Suffix Graph}, reducing time complexity from quadratic to $\\mathcal{O}(N \\times L)$ and offloading generation to the client to eliminate server-side preprocessing overhead.",
-      "Built a scalable \\textbf{real-time chat system} utilizing a \\textbf{Gateway-Worker-Queue pattern} with \\textbf{Socket.IO and Redis}, decoupling connections from database writes to ensure message delivery during high traffic spikes."
+      "Engineered an automated \\textbf{workflow execution platform} in \\textbf{Python} that orchestrates multi-step data pipelines using a \\textbf{directed acyclic graph (DAG)} runtime, \\textbf{computer vision}, and \\textbf{Pydantic} validation to eliminate repetitive manual processes.",
+      "Designed a fault-tolerant \\textbf{DAG execution engine} using a token-passing variant of \\textbf{Kahn's algorithm} and \\textbf{DFS cycle detection}, eliminating convergence deadlocks across conditional branches and enabling non-recursive cyclic loop execution.",
+      "Implemented a decoupled \\textbf{dispatch registry} with dynamic \\textbf{dependency injection} and automated \\textbf{exponential backoff retries}, isolating failure domains and ensuring resilient error recovery across 26+ modular execution tasks.",
+      "Architected an asynchronous multi-threaded monitoring pipeline utilizing a background \\textbf{QThread} and \\textbf{PyQt6 signals and slots}, streaming real-time status alerts, execution diagnostics, and logs without blocking critical operations."
     ]
   },
   {
-    "title": "CORTEX",
-    "technologies": "Python, PyQt6, Pydantic, NetworkX, LLM, PyAutoGUI",
-    "github_link": "https://github.com/mrityunjay-jha1337/Cortex",
+    "title": "ALASKA",
+    "technologies": "Python, Redis, PostgreSQL, PgBouncer, Docker, Node.js, TypeScript, Socket.io",
+    "github_link": "https://github.com/mrityunjay-jha1337/Alaska",
     "bullets": [
-      "Built an \\textbf{OS-level automation engine} using \\textbf{PyAutoGUI} to interact with complex EHR systems, enabling seamless data entry workflows across iframe-heavy web portals and legacy desktop apps where standard DOM scraping fails.",
-      "Transformed script-based bot creation into a visual workflow by developing a custom \\textbf{drag-and-drop node interface} using \\textbf{PyQt6 and NetworkX}, allowing non-technical users to visually build complex \\textbf{automation pipelines (DAGs)}.",
-      "Reduced UI-update breakages by integrating \\textbf{self-healing image locators} powered by \\textbf{Vision LLMs}, enabling the system to dynamically identify and interact with elements despite layout shifts or varying screen resolutions."
+      "Architected a \\textbf{distributed commute-matching platform} that pairs transit passengers along overlapping routes using \\textbf{sub-millisecond path intersection} algorithms and an \\textbf{event-driven messaging architecture}.",
+      "Automated transit network modeling by developing a \\textbf{Python ETL pipeline} to convert multi-sheet timetable datasets into topological graphs, enabling \\textbf{Suffix Automaton (SAM)} queries to resolve route overlaps in linear \\textbf{O(M) time}.",
+      "Engineered an asynchronous message-broker pipeline using \\textbf{Redis Streams} and \\textbf{PgBouncer}, implementing \\textbf{Pending Entries List (PEL) recovery} and chunked batch writes to guarantee \\textbf{zero data loss} during worker failovers while shielding \\textbf{PostgreSQL} from connection spikes.",
+      "Orchestrated a horizontally scalable \\textbf{Docker} microservices deployment fronted by \\textbf{Nginx} with optimized \\textbf{Linux file descriptor limits}, validating system reliability via an automated benchmarking harness sustaining \\textbf{14,000+ concurrent connections}."
     ]
   }
 ]

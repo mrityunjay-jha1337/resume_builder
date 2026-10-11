@@ -1,0 +1,66 @@
+About Quadeye
+
+Quadeye is an algorithmic trading firm operating across major global financial markets and exchanges. We combine quantitative research, advanced mathematical modeling, and high-performance technology to develop sophisticated automated trading strategies across diverse asset classes.
+
+Our teams work at the intersection of markets, mathematics, statistics, and technology, with significant ownership across the entire strategy lifecycle—from research and ideation to implementation, deployment, and optimization.
+
+We offer a highly meritocratic environment where talented researchers and engineers have the opportunity to work on challenging problems, access world-class infrastructure, and see the direct impact of their work on live trading performance.
+
+The Role
+
+We are looking for a Systems Engineering Intern to join our Latency Systems team and work on the high-performance technology that powers our trading operations.
+
+You will work at the intersection of operating systems, networking, CPU architecture, and high-performance software, contributing to real-time systems engineered for nanosecond-level latency. You will learn how to identify performance bottlenecks, optimize critical execution paths, and build reliable systems where every CPU cycle matters.
+
+You will work closely with systems engineers, quantitative researchers, traders, and infrastructure teams while contributing across the systems engineering lifecycle:
+
+Design → Development → Performance Engineering → Testing → Deployment → Optimization
+
+What You’ll Do
+
+• Design and develop components for real-time trade execution and risk management systems with stringent latency and reliability requirements.
+• Profile critical execution paths to identify bottlenecks and improve system latency, throughput, and predictability.
+• Optimize performance across CPU utilization, memory management, cache behavior, operating systems, and compiler-level execution.
+• Explore low-latency systems concepts including kernel internals, CPU affinity, interrupts, clock sources, NUMA, and CPU microarchitecture.
+• Research and experiment with high-performance networking stacks and kernel bypass technologies.
+• Design and optimize algorithms and cache-efficient data structures for performance-critical workloads.
+• Explore lock-free and wait-free approaches where appropriate for latency-sensitive systems.
+• Build monitoring and diagnostic tools to analyze CPU cycles, network throughput, memory allocation, and system latency.
+• Contribute across requirements gathering, system design, implementation, testing, deployment, and production monitoring.
+• Collaborate with engineers, quantitative researchers, traders, and infrastructure teams to improve the performance and reliability of our trading systems.
+Requirements
+• Pursuing a degree in Computer Science, Computer Engineering, or a closely related technical discipline, preferably from a leading academic institution.
+• Strong foundation in data structures, algorithms, and object-oriented programming.
+• Strong programming skills in C++ or C.
+• Good understanding of operating systems, Linux, and system-level programming concepts.
+• Strong analytical and problem-solving skills with an interest in understanding systems at a low level.
+• Curiosity about performance engineering, operating system internals, networking, and computer architecture.
+• Familiarity with low-level debugging, profiling, or performance analysis tools is advantageous.
+• Knowledge of Python, Perl, R, or other scripting languages is a plus.
+• Ability to work effectively on multiple priorities in a fast-paced technical environment.
+• Strong communication and collaboration skills with a willingness to learn quickly and take ownership.
+Benefits
+Skills
+perl programming
+R
+profiling
+operating systems
+Strong programming skills
+deployment
+testing
+implementation
+requirements gathering
+NUMA
+cash
+debugging
+algorithmic trading
+python programming
+linux
+c programming language
+Excellent programming skills
+system tuning
+Operating
+Cache
+cpu
+OS internals
+system design

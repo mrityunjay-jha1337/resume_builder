@@ -12,7 +12,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-
+stage1.json
+stage2.json
 # Virtual Environments
 venv/
 env/
